@@ -23,7 +23,7 @@ class Fighter {
     }
 
     public function getStrength(): int {
-        return $this->strength;
+        return $this->strenght;
     }
 
     public function getDefense(): int {
