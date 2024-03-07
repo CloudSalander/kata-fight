@@ -38,6 +38,7 @@ class Fight {
     private function fighterLoseLife(Fighter $attacker, Fighter $defender): void {
         $damage = $attacker->getStrength() - $defender->getDefense();
         if($damage <= 0) $damage = 1;
+        echo "WOw! ".$attacker->getName()." did hurt ".$damage." to ".$defender->getName().PHP_EOL;
         $defender->receiveDamage($damage);
     }
 
