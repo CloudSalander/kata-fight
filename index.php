@@ -7,7 +7,7 @@ $fighter2 = new Fighter("Paco",6,4);
 
 $fight = new Fight($fighter1, $fighter2);
 
-var_dump($fight);
+$fight->fight();
 
 
 ?>
