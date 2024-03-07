@@ -1,5 +1,9 @@
 <?php
 class Fight {
+    const LOW_AIM = 30;  
+    const MED_AIM = 50;
+    const HIGH_AIM = 70;
+ 
     function __construct(private Fighter $fighter1, private Fighter $fighter2){}
 
     public function fight() {
@@ -16,9 +20,9 @@ class Fight {
     }
 
     private function getAim(): int {
-        if ($this->isFighter1Stronger()) return 70;
-        else if ($this->isFighter2Stronger()) return 30;
-        else return 50;
+        if ($this->isFighter1Stronger()) return self::HIGH_AIM;
+        else if ($this->isFighter2Stronger()) return self::LOW_AIM;
+        else return self::MED_AIM;
     }
 
     private function isFighter1Stronger(): bool {
