@@ -30,5 +30,9 @@ class Fighter {
         return $this->defense;
     }
 
+    public function receiveDamage(int $damage): void {
+        $this->life -= $damage;
+    }
+
 }
 ?>

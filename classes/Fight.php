@@ -10,14 +10,11 @@ class Fight {
     public function fight() {
         while($this->areFightersAlive()) {
             //Decisión de diseño, puedo hacerlo desde fighter 1, o no.
-            if($this->fighter1hits()) {
-                //Resto vida a fighter 2
-            }
-            else {
-                //resto vida a fighter 1
-            }
-            
+            $fighter1_hits = $this->fighter1hits();
+            if($fighter1_hits) $this->fighter2LoseLife();
+            else $this->fighter1LoseLife();
         }
+        $this->announceWinner();
     }
 
     private function areFightersAlive(): bool {
@@ -29,8 +26,7 @@ class Fight {
         $random_number = rand(1,100);
         if ($this->isFighter1Stronger()) $hit_aim = self::HIGH_AIM;
         else if ($this->isFighter2Stronger()) $hit_aim = self::LOW_AIM;
-
-        if($hit_aim <= $random_number) return true;
+        if($random_number <= $hit_aim) return true;
         return false;
     }
 
@@ -40,6 +36,24 @@ class Fight {
 
     private function isFighter2Stronger(): bool {
         return $this->fighter1->getStrength() < $this->fighter2->getStrength();
+    }
+
+    private function fighter1LoseLife(): void {
+        $damage = $this->fighter2->getStrength() - $this->fighter1->getDefense();
+        if($damage <= 0) $damage = 1;
+        $this->fighter1->receiveDamage($damage);
+    }
+
+    private function fighter2LoseLife(): void {
+        $damage = $this->fighter1->getStrength() - $this->fighter2->getDefense();
+        if($damage <= 0) $damage = 1;
+        $this->fighter2->receiveDamage($damage);
+    }
+
+    private function announceWinner(): void {
+        $winner = $this->fighter1;
+        if($this->fighter1->getLife() <= 0) $winner = $this->fighter2;
+        echo $winner->getName()." won the battle!";
     }
 }
 
