@@ -11,8 +11,8 @@ class Fight {
         while($this->areFightersAlive()) {
             //Decisión de diseño, puedo hacerlo desde fighter 1, o no.
             $fighter1_hits = $this->fighter1hits();
-            if($fighter1_hits) $this->fighter2LoseLife();
-            else $this->fighter1LoseLife();
+            if($fighter1_hits) $this->fighterLoseLife($this->fighter1, $this->fighter2);
+            else $this->fighterLoseLife($this->fighter2,$this->fighter1);
         }
         $this->announceWinner();
     }
@@ -25,29 +25,20 @@ class Fight {
         $hit_aim = self::MED_AIM;
         $random_number = rand(1,100);
         if ($this->isFighter1Stronger()) $hit_aim = self::HIGH_AIM;
-        else if ($this->isFighter2Stronger()) $hit_aim = self::LOW_AIM;
+        else $hit_aim = self::LOW_AIM;
         if($random_number <= $hit_aim) return true;
         return false;
     }
 
     private function isFighter1Stronger(): bool {
-        return $this->fighter1->getStrength() > $this->fighter2->getStrength();
+        if ($this->fighter1->getStrength() > $this->fighter2->getStrength()) return true;
+        return false;
     }
 
-    private function isFighter2Stronger(): bool {
-        return $this->fighter1->getStrength() < $this->fighter2->getStrength();
-    }
-
-    private function fighter1LoseLife(): void {
-        $damage = $this->fighter2->getStrength() - $this->fighter1->getDefense();
+    private function fighterLoseLife(Fighter $attacker, Fighter $defender): void {
+        $damage = $attacker->getStrength() - $defender->getDefense();
         if($damage <= 0) $damage = 1;
-        $this->fighter1->receiveDamage($damage);
-    }
-
-    private function fighter2LoseLife(): void {
-        $damage = $this->fighter1->getStrength() - $this->fighter2->getDefense();
-        if($damage <= 0) $damage = 1;
-        $this->fighter2->receiveDamage($damage);
+        $defender->receiveDamage($damage);
     }
 
     private function announceWinner(): void {
